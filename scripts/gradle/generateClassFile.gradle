@@ -1,0 +1,76 @@
+/**
+ * Copyright 2020 Yuki Nabeshima. All right reserved.
+ */
+
+
+import groovy.swing.SwingBuilder
+
+import java.awt.*
+import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
+
+task generateClassFile {
+    doLast {
+        new ClassFileGenerator(FileSystems.getDefault().getPath("${project.rootDir}")).start()
+    }
+}
+
+configure(generateClassFile) {
+    group = 'programming'
+    description = 'Create New Work Class'
+}
+
+class ClassFileGenerator {
+    final Path rootPath
+    final Path targetPath
+    final Path inputPath
+
+    ClassFileGenerator(Path rootPath) {
+        this.rootPath = rootPath
+        this.targetPath = rootPath.resolve("src").resolve("main").resolve("kotlin").resolve("com").resolve("valjapan").resolve("competitionprogramming")
+        this.inputPath = rootPath.resolve("src").resolve("main").resolve("resources").resolve("input")
+    }
+
+    def start() {
+        new SwingBuilder().edt {
+            dialog(modal: true, title: 'Class File Generator', alwaysOnTop: true, resizable: true, locationRelativeTo: null, pack: true, show: true) {
+                lookAndFeel('system')
+                vbox(alignmentX: 0.0f) { // Put everything below each other
+
+                    label(text: "ファイル名を入力して下さい。")
+                    def input1 = textField()
+                    label(text: "input例を入力してください。")
+                    def imput2 = textArea()
+                    button(defaultButton: true, text: 'OK', actionPerformed: {
+                        dispose()
+                        genOriginal(input1.text, imput2.text)
+                    }, constraints: BorderLayout.SOUTH)
+                }
+            }
+        }
+    }
+
+    def genOriginal(String name, String imput) {
+        println("Project Name:" + name)
+        println("Input Code:" + name)
+        def destination = targetPath.resolve(name + ".kt")
+        final BufferedWriter writer = Files.newBufferedWriter(destination, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+        writer.writeLine("package com.valjapan.competitionprogramming")
+        writer.writeLine("")
+        writer.writeLine("")
+        writer.writeLine("fun main(args: Array<String>) {")
+        writer.writeLine("")
+        writer.writeLine("}")
+        writer.flush()
+        writer.close()
+
+        def destination2 = inputPath.resolve("input.txt")
+        final BufferedWriter writer2 = Files.newBufferedWriter(destination2, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+        writer2.writeLine(imput)
+        writer2.flush()
+        writer2.close()
+    }
+}

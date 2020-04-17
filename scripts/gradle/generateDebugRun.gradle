@@ -1,0 +1,85 @@
+import groovy.swing.SwingBuilder
+
+import java.awt.*
+import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
+
+task generateDebugRun {
+    doLast {
+        new ClassFileGenerator(FileSystems.getDefault().getPath("${project.rootDir}")).start()
+    }
+}
+
+configure(generateDebugRun) {
+    group = 'programming'
+    description = 'Create Debug Setting File'
+}
+
+class ClassFileGenerator {
+    final Path rootPath
+
+    ClassFileGenerator(Path rootPath) {
+        this.rootPath = rootPath
+    }
+
+    def start() {
+        new SwingBuilder().edt {
+            dialog(modal: true, title: 'Debug Run Generator', alwaysOnTop: true, resizable: true, locationRelativeTo: null, pack: true, show: true) {
+                lookAndFeel('system')
+                vbox(alignmentX: 0.0f) { // Put everything below each other
+                    label(text: "ファイル名を入力して下さい。")
+                    def input = textField()
+                    button(defaultButton: true, text: 'OK', actionPerformed: {
+                        dispose()
+                        genOriginal(input.text)
+                    }, constraints: BorderLayout.SOUTH)
+                }
+            }
+        }
+    }
+
+    def genOriginal(String name) {
+        println("Project Name:" + name)
+        def destination = rootPath.resolve("build.gradle")
+        final BufferedWriter writer = Files.newBufferedWriter(destination, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+        writer.writeLine("plugins {")
+        writer.writeLine("    id 'org.jetbrains.kotlin.jvm' version '1.3.21'")
+        writer.writeLine("    id 'application'")
+        writer.writeLine("}")
+        writer.writeLine("apply from: \"\${project.rootDir}/scripts/gradle/generateClassFile.gradle\"")
+        writer.writeLine("apply from: \"\${project.rootDir}/scripts/gradle/generateDebugRun.gradle\"")
+        writer.writeLine("apply from: \"\${project.rootDir}/scripts/gradle/buildDebugRun.gradle\"")
+        writer.writeLine("")
+        writer.writeLine("group 'com.valjapan'")
+        writer.writeLine("version '1.0-SNAPSHOT'")
+        writer.writeLine("")
+        writer.writeLine("repositories {")
+        writer.writeLine("    mavenCentral()")
+        writer.writeLine("}")
+        writer.writeLine("")
+        writer.writeLine("dependencies {")
+        writer.writeLine("    implementation \"org.jetbrains.kotlin:kotlin-stdlib-jdk8\"")
+        writer.writeLine("}")
+        writer.writeLine("")
+        writer.writeLine("application {")
+        writer.writeLine("    mainClassName = 'com.valjapan.competitionprogramming." + name + "Kt'")
+        writer.writeLine("}")
+        writer.writeLine("")
+        writer.writeLine("run {")
+        writer.writeLine("    standardInput = System.in")
+        writer.writeLine("}")
+        writer.writeLine("")
+        writer.writeLine("compileKotlin {")
+        writer.writeLine("    kotlinOptions.jvmTarget = \"1.8\"")
+        writer.writeLine("}")
+        writer.writeLine("")
+        writer.writeLine("compileTestKotlin {")
+        writer.writeLine("    kotlinOptions.jvmTarget = \"1.8\"")
+        writer.writeLine("}")
+        writer.flush()
+        writer.close()
+    }
+}

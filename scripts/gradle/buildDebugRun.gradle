@@ -1,0 +1,9 @@
+task buildDebugRun(type: Exec) {
+    executable "sh"
+    args "-c", "./gradlew run < src/main/resources/input/input.txt"
+}
+
+configure(buildDebugRun) {
+    group = 'programming'
+    description = 'Run Debug Kotlin Files'
+}
