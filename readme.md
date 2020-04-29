@@ -1,6 +1,14 @@
 # はじめに
 Kotlinで競技プログラミングにチャレンジしてみた
 
+# 挑戦サイト
+## AOJ
+https://onlinejudge.u-aizu.ac.jp/home
+### 実績
+http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=ValJapan#2
+## AC
+https://atcoder.jp/?lang=ja
+
 # コード
 ## メイン関数
 ```main.kt
