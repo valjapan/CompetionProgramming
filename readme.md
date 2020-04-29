@@ -5,7 +5,8 @@ Kotlinで競技プログラミングにチャレンジしてみた
 ## AOJ
 https://onlinejudge.u-aizu.ac.jp/home
 ### 実績
-http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=ValJapan#2
+https://onlinejudge.u-aizu.ac.jp/status/users/ValJapan
+https://onlinejudge.u-aizu.ac.jp/status/users/ValJapan/submissions/1
 ## AC
 https://atcoder.jp/?lang=ja
 
