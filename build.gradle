@@ -18,7 +18,7 @@ dependencies {
 }
 
 application {
-    mainClassName = 'com.valjapan.competitionprogramming.AOJ1_5_DKt'
+    mainClassName = 'com.valjapan.competitionprogramming.AOJ1_6_DKt'
 }
 
 run {
