@@ -75,10 +75,6 @@ class ClassFileGenerator {
         writer.writeLine("compileKotlin {")
         writer.writeLine("    kotlinOptions.jvmTarget = \"1.8\"")
         writer.writeLine("}")
-        writer.writeLine("")
-        writer.writeLine("compileTestKotlin {")
-        writer.writeLine("    kotlinOptions.jvmTarget = \"1.8\"")
-        writer.writeLine("}")
         writer.flush()
         writer.close()
     }
