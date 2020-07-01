@@ -60,7 +60,6 @@ class ClassFileGenerator {
         final BufferedWriter writer = Files.newBufferedWriter(destination, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
         writer.writeLine("package com.valjapan.competitionprogramming")
         writer.writeLine("")
-        writer.writeLine("")
         writer.writeLine("fun main(args: Array<String>) {")
         writer.writeLine("")
         writer.writeLine("}")
